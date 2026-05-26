@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: launchdesk
+    runtime: docker
+    plan: starter
+    healthCheckPath: /api/health
+    disk:
+      name: launchdesk-data
+      mountPath: /data
+      sizeGB: 1
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 4177
+      - key: DATA_FILE
+        value: /data/launchdesk.json

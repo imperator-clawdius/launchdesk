@@ -1,0 +1,8 @@
+node_modules/
+data/*.json
+!data/seed.json
+.env
+.env.*
+coverage/
+npm-debug.log*
+verification/

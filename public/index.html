@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LaunchDesk</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">LaunchDesk</p>
+          <h1>Monthly revenue cockpit</h1>
+        </div>
+        <div class="topbar-actions">
+          <button class="icon-btn" id="refreshBtn" title="Refresh" aria-label="Refresh">
+            <i data-lucide="refresh-cw"></i>
+          </button>
+          <a class="icon-btn" href="/api/export" title="Export data" aria-label="Export data">
+            <i data-lucide="download"></i>
+          </a>
+        </div>
+      </header>
+
+      <section class="metrics">
+        <article>
+          <span>Projected net MRR</span>
+          <strong id="projectedMrr">$0</strong>
+        </article>
+        <article>
+          <span>Pipeline value</span>
+          <strong id="pipelineValue">$0</strong>
+        </article>
+        <article>
+          <span>Ready offers</span>
+          <strong id="readyOffers">0</strong>
+        </article>
+        <article>
+          <span>Avg score</span>
+          <strong id="avgScore">0%</strong>
+        </article>
+      </section>
+
+      <section class="workspace">
+        <form class="panel" id="offerForm">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Offer Builder</p>
+              <h2>Package the monthly product</h2>
+            </div>
+            <button class="primary" type="submit">
+              <i data-lucide="rocket"></i>
+              Create offer
+            </button>
+          </div>
+
+          <div class="form-grid">
+            <label>
+              Business name
+              <input name="businessName" value="LaunchDesk" autocomplete="off" />
+            </label>
+            <label>
+              Offer name
+              <input name="offerName" value="HVAC missed-call recovery" autocomplete="off" />
+            </label>
+            <label>
+              Niche
+              <select name="niche" id="nicheSelect"></select>
+            </label>
+            <label>
+              Monthly price
+              <input name="monthlyPrice" type="number" min="97" step="50" value="497" />
+            </label>
+            <label>
+              Setup fee
+              <input name="setupFee" type="number" min="0" step="50" value="997" />
+            </label>
+            <label>
+              Gross margin %
+              <input name="grossMargin" type="number" min="10" max="95" step="1" value="78" />
+            </label>
+            <label>
+              Proof level
+              <input name="proofLevel" type="range" min="1" max="5" value="3" />
+            </label>
+            <label>
+              Fulfillment hours / mo
+              <input name="fulfillmentHours" type="number" min="0" max="20" step="1" value="2" />
+            </label>
+            <label>
+              Lead source strength
+              <input name="leadSourceStrength" type="range" min="1" max="5" value="4" />
+            </label>
+            <label>
+              Promise clarity
+              <input name="promiseClarity" type="range" min="1" max="5" value="5" />
+            </label>
+            <label class="wide">
+              Target customer
+              <input name="targetCustomer" value="independent HVAC owners" autocomplete="off" />
+            </label>
+            <label class="wide">
+              Outcome
+              <input name="outcome" value="turn missed emergency calls into booked jobs and review requests" autocomplete="off" />
+            </label>
+          </div>
+
+          <div class="channel-row" id="channelRow"></div>
+        </form>
+
+        <aside class="panel preview-panel">
+          <div class="panel-head compact">
+            <div>
+              <p class="eyebrow">Launch Assets</p>
+              <h2 id="assetHeadline">Select or create an offer</h2>
+            </div>
+            <span class="score-pill" id="assetScore">0%</span>
+          </div>
+          <div class="asset-stack" id="assetStack"></div>
+        </aside>
+      </section>
+
+      <section class="panel tabs-panel">
+        <nav class="tabs" aria-label="Workspace views">
+          <button class="tab active" type="button" data-view="offers">Offers</button>
+          <button class="tab" type="button" data-view="leads">Leads</button>
+          <button class="tab" type="button" data-view="plan">Operating Plan</button>
+        </nav>
+
+        <div class="view active" id="offersView">
+          <div class="cards" id="offerCards"></div>
+        </div>
+
+        <div class="view" id="leadsView">
+          <form class="lead-form" id="leadForm">
+            <input name="company" placeholder="Company" required />
+            <input name="contact" placeholder="Contact" />
+            <select name="niche" id="leadNicheSelect"></select>
+            <select name="stage">
+              <option value="new">New</option>
+              <option value="outreach">Outreach</option>
+              <option value="qualified">Qualified</option>
+              <option value="pilot">Pilot</option>
+              <option value="won">Won</option>
+              <option value="lost">Lost</option>
+            </select>
+            <input name="value" type="number" min="0" step="50" value="497" />
+            <input name="nextAction" placeholder="Next action" />
+            <button class="primary" type="submit">
+              <i data-lucide="plus"></i>
+              Add lead
+            </button>
+          </form>
+          <div class="lead-table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Company</th>
+                  <th>Niche</th>
+                  <th>Stage</th>
+                  <th>Value</th>
+                  <th>Next action</th>
+                </tr>
+              </thead>
+              <tbody id="leadRows"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="view" id="planView">
+          <div class="plan-grid">
+            <article>
+              <i data-lucide="target"></i>
+              <h3>Week 1</h3>
+              <p>Pick one niche, publish one offer, build a list of 50 leads, send 20 direct messages manually.</p>
+            </article>
+            <article>
+              <i data-lucide="phone-call"></i>
+              <h3>Week 2</h3>
+              <p>Book 3 discovery calls, install one pilot manually, prove the weekly owner report.</p>
+            </article>
+            <article>
+              <i data-lucide="repeat"></i>
+              <h3>Week 3</h3>
+              <p>Turn the pilot into a repeatable checklist, add Stripe billing, and ask for referrals.</p>
+            </article>
+            <article>
+              <i data-lucide="line-chart"></i>
+              <h3>Week 4</h3>
+              <p>Keep what converts, cut what does not, and raise price after the second paying customer.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <script src="/app.js"></script>
+  </body>
+</html>
