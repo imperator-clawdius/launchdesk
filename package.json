@@ -1,9 +1,25 @@
 {
   "name": "launchdesk",
   "version": "0.1.0",
-  "private": true,
   "type": "module",
   "description": "LaunchDesk turns small service offers into launchable monthly revenue systems.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/imperator-clawdius/launchdesk.git"
+  },
+  "bugs": {
+    "url": "https://github.com/imperator-clawdius/launchdesk/issues"
+  },
+  "homepage": "https://imperator-clawdius.github.io/launchdesk/",
+  "keywords": [
+    "small-business",
+    "crm",
+    "launch",
+    "revenue",
+    "self-hosted",
+    "local-services"
+  ],
   "scripts": {
     "start": "node src/server.js",
     "dev": "node --watch src/server.js",

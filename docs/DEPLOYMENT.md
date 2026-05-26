@@ -24,6 +24,20 @@ The repository includes `Dockerfile` and `render.yaml`.
 9. Create one test offer.
 10. Open `/api/export` and verify the saved test offer appears.
 
+## GitHub Pages landing page
+
+The repo also includes a public project landing page at `docs/index.html`.
+
+To enable it:
+
+1. Open the GitHub repo settings.
+2. Go to Pages.
+3. Set the source to deploy from the default branch.
+4. Choose `/docs` as the Pages folder.
+5. Save and wait for GitHub Pages to publish.
+
+The Pages site is marketing/docs only. The actual LaunchDesk app still runs through the Node server.
+
 ## Backup plan
 
 Until Postgres exists, the data file is the source of truth.
