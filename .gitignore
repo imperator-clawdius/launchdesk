@@ -3,6 +3,7 @@ data/*.json
 !data/seed.json
 .env
 .env.*
+!.env.example
 coverage/
 npm-debug.log*
 verification/
