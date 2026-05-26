@@ -15,3 +15,7 @@ services:
         value: 4177
       - key: DATA_FILE
         value: /data/launchdesk.json
+      - key: AUTH_USER
+        value: admin
+      - key: AUTH_PASSWORD
+        sync: false

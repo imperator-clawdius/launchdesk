@@ -52,6 +52,37 @@ test("API creates offers, leads, and summary", async () => {
   }
 });
 
+test("operator auth protects app when configured", async () => {
+  const dir = await mkdtemp(join(tmpdir(), "launchdesk-auth-"));
+  const previousUser = process.env.AUTH_USER;
+  const previousPassword = process.env.AUTH_PASSWORD;
+  process.env.AUTH_USER = "owner";
+  process.env.AUTH_PASSWORD = "secret";
+
+  const server = createApp({ store: new JsonStore(join(dir, "auth.json")) }).listen(0);
+  const baseUrl = `http://127.0.0.1:${server.address().port}`;
+
+  try {
+    const health = await fetch(`${baseUrl}/api/health`);
+    assert.equal(health.status, 200);
+
+    const blocked = await fetch(`${baseUrl}/api/summary`);
+    assert.equal(blocked.status, 401);
+
+    const allowed = await fetch(`${baseUrl}/api/summary`, {
+      headers: {
+        Authorization: `Basic ${Buffer.from("owner:secret").toString("base64")}`,
+      },
+    });
+    assert.equal(allowed.status, 200);
+  } finally {
+    await new Promise((resolve) => server.close(resolve));
+    await rm(dir, { recursive: true, force: true });
+    restoreEnv("AUTH_USER", previousUser);
+    restoreEnv("AUTH_PASSWORD", previousPassword);
+  }
+});
+
 async function get(url) {
   const res = await fetch(url);
   assert.equal(res.ok, true);
@@ -66,4 +97,12 @@ async function post(url, body) {
   });
   assert.equal(res.ok, true);
   return res.json();
+}
+
+function restoreEnv(key, value) {
+  if (value === undefined) {
+    delete process.env[key];
+  } else {
+    process.env[key] = value;
+  }
 }

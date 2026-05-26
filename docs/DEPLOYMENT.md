@@ -16,10 +16,13 @@ The repository includes `Dockerfile` and `render.yaml`.
    - `NODE_ENV=production`
    - `PORT=4177`
    - `DATA_FILE=/data/launchdesk.json`
+   - `AUTH_USER=admin`
+   - `AUTH_PASSWORD=<strong password>`
 6. Deploy.
 7. Confirm `GET /api/health` returns `{"ok":true,...}`.
-8. Open the public URL and create one test offer.
-9. Open `/api/export` and verify the saved test offer appears.
+8. Open the public URL and verify it prompts for the operator password.
+9. Create one test offer.
+10. Open `/api/export` and verify the saved test offer appears.
 
 ## Backup plan
 
@@ -59,6 +62,7 @@ The code already isolates persistence in `src/store.js`; replace `JsonStore` wit
 ## Production hardening checklist
 
 - Add authentication before sharing the URL outside trusted operators.
+- Keep `AUTH_PASSWORD` set in every hosted environment.
 - Add Stripe checkout after the first offer closes manually.
 - Add Twilio/Vapi/Retell only after the missed-call workflow is proven by hand.
 - Add Postgres before multiple operators use it.

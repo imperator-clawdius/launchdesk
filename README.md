@@ -32,6 +32,8 @@ Copy `.env.example` into `.env` for local configuration if needed. The server lo
 - `PORT`: web port, default `4177`
 - `DATA_FILE`: persistence file, default `./data/launchdesk.json`
 - `APP_BASE_URL`: public base URL for future integrations
+- `AUTH_USER`: operator username, default `admin`
+- `AUTH_PASSWORD`: enables basic authentication when set
 
 ## API
 

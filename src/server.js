@@ -1,4 +1,5 @@
 import "dotenv/config";
+import { timingSafeEqual } from "node:crypto";
 import express from "express";
 import helmet from "helmet";
 import morgan from "morgan";
@@ -22,6 +23,7 @@ export function createApp({ store = new JsonStore(process.env.DATA_FILE), logger
   );
   if (logger) app.use(morgan("tiny"));
   app.use(express.json({ limit: "256kb" }));
+  app.use(requireOperatorAuth);
   app.use(express.static(publicDir, { extensions: ["html"] }));
 
   app.get("/api/health", async (_req, res, next) => {
@@ -151,6 +153,36 @@ export function createApp({ store = new JsonStore(process.env.DATA_FILE), logger
   });
 
   return app;
+}
+
+function requireOperatorAuth(req, res, next) {
+  const password = process.env.AUTH_PASSWORD;
+  if (!password || req.path === "/api/health") return next();
+
+  const expectedUser = process.env.AUTH_USER || "admin";
+  const auth = req.headers.authorization || "";
+  const [scheme, encoded] = auth.split(" ");
+  if (scheme !== "Basic" || !encoded) {
+    res.setHeader("WWW-Authenticate", 'Basic realm="LaunchDesk"');
+    return res.status(401).send("Authentication required");
+  }
+
+  const decoded = Buffer.from(encoded, "base64").toString("utf8");
+  const splitAt = decoded.indexOf(":");
+  const user = splitAt >= 0 ? decoded.slice(0, splitAt) : "";
+  const providedPassword = splitAt >= 0 ? decoded.slice(splitAt + 1) : "";
+
+  if (safeEqual(user, expectedUser) && safeEqual(providedPassword, password)) return next();
+
+  res.setHeader("WWW-Authenticate", 'Basic realm="LaunchDesk"');
+  return res.status(401).send("Authentication required");
+}
+
+function safeEqual(a, b) {
+  const left = Buffer.from(String(a));
+  const right = Buffer.from(String(b));
+  if (left.length !== right.length) return false;
+  return timingSafeEqual(left, right);
 }
 
 const isEntrypoint = process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href;
