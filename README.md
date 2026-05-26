@@ -27,7 +27,7 @@ Open `http://localhost:4177`.
 
 ## Environment
 
-Copy `.env.example` into `.env` for local configuration if needed.
+Copy `.env.example` into `.env` for local configuration if needed. The server loads `.env` automatically.
 
 - `PORT`: web port, default `4177`
 - `DATA_FILE`: persistence file, default `./data/launchdesk.json`
