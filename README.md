@@ -1,5 +1,9 @@
 # LaunchDesk
 
+[![Release](https://img.shields.io/github/v/release/imperator-clawdius/launchdesk?style=flat-square)](https://github.com/imperator-clawdius/launchdesk/releases)
+[![License: MIT](https://img.shields.io/badge/license-MIT-f2b94b?style=flat-square)](LICENSE)
+[![Self-hosted](https://img.shields.io/badge/self--hosted-yes-65bdd1?style=flat-square)](docs/DEPLOYMENT.md)
+
 **A free, self-hostable cockpit for turning small service ideas into monthly revenue systems.**
 
 LaunchDesk helps independent builders, students, freelancers, and local operators package a simple offer, score whether it can become recurring revenue, generate launch copy, and track the first leads without buying a heavy CRM.
