@@ -4,11 +4,11 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-f2b94b?style=flat-square)](LICENSE)
 [![Self-hosted](https://img.shields.io/badge/self--hosted-yes-65bdd1?style=flat-square)](docs/DEPLOYMENT.md)
 
-**A free, self-hostable cockpit for turning small service ideas into monthly revenue systems.**
+**A free, open-source, MIT-licensed service for turning small service ideas into monthly revenue systems.**
 
 LaunchDesk helps independent builders, students, freelancers, and local operators package a simple offer, score whether it can become recurring revenue, generate launch copy, and track the first leads without buying a heavy CRM.
 
-It is not another generic app builder. It is a practical launch desk for the hard part after the app exists: choosing a narrow customer, making a clear promise, reaching real people, and learning from the pipeline.
+It is a public GitHub repo you can fork, self-host, inspect, modify, teach with, or run as a lightweight operator service. It is not another generic app builder. It is a practical launch desk for the hard part after the app exists: choosing a narrow customer, making a clear promise, reaching real people, and learning from the pipeline.
 
 ![LaunchDesk desktop screenshot](docs/assets/launchdesk-desktop.png)
 
@@ -22,7 +22,7 @@ Most people do not need more business theory. They need a small system that help
 - Track the people they contact.
 - Keep improving based on replies, calls, pilots, and retained revenue.
 
-LaunchDesk is meant to be a free starting point for that. Take it, run it locally, deploy it privately, change it, teach with it, or use it to help someone build a steadier life.
+LaunchDesk is meant to be a free open-source starting point for that. Take it, run it locally, deploy it privately, change it, teach with it, or use it to help someone build a steadier life. It is released under the [MIT License](LICENSE).
 
 ## What It Does
 
