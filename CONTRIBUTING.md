@@ -24,6 +24,7 @@ LaunchDesk is meant to stay useful, understandable, and cheap to run. Contributi
 
 ```powershell
 npm install
+npx playwright install chromium
 npm test
 npm run smoke
 npm start
