@@ -47,6 +47,7 @@ Those businesses already understand paying monthly for calls, bookings, reviews,
 git clone <your-fork-url>
 cd launchdesk
 npm install
+npx playwright install chromium
 npm test
 npm run smoke
 npm start

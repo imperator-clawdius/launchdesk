@@ -215,8 +215,9 @@ document.querySelector("#offerForm").addEventListener("submit", async (event) =>
 
 document.querySelector("#leadForm").addEventListener("submit", async (event) => {
   event.preventDefault();
-  await api.post("/api/leads", formToLead(event.currentTarget));
-  event.currentTarget.reset();
+  const form = event.currentTarget;
+  await api.post("/api/leads", formToLead(form));
+  form.reset();
   await loadAll();
 });
 
