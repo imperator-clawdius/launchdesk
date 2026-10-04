@@ -28,7 +28,7 @@ LaunchDesk is meant to be a free open-source starting point for that. Take it, r
 
 - Scores a monthly offer by niche fit, pricing, margin, proof, fulfillment effort, lead source, clarity, and channel mix.
 - Generates launch assets: one-liner, landing-page copy, outbound email, SMS opener, onboarding checklist, weekly report template, and risks.
-- Tracks leads by stage so the work stays visible.
+- Tracks leads by stage so the work stays visible. In **Leads**, choose **Edit** on an existing lead to update its stage, value, or next action; saving preserves the rest of the lead and refreshes the pipeline totals. Cancel discards the draft, and failed saves keep your edits available to retry.
 - Exposes a small JSON API for offers, leads, summaries, exports, metadata, and health checks.
 - Runs as a simple Node/Express app with JSON-file persistence.
 - Ships with Docker, Render Blueprint config, tests, smoke test, and operator authentication for hosted deployments.

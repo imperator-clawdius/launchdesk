@@ -373,6 +373,63 @@ input[type="range"] {
   overflow-x: auto;
 }
 
+.secondary {
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  color: var(--text);
+  min-height: 44px;
+  padding: 0 14px;
+}
+
+button:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.lead-dialog {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  color: var(--text);
+  max-height: calc(100dvh - 32px);
+  padding: 24px;
+  width: min(520px, calc(100% - 32px));
+}
+
+.lead-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.lead-dialog h2 {
+  margin: 0;
+}
+
+#leadEditCompany {
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+
+.dialog-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 18px;
+}
+
+.form-error {
+  color: var(--red);
+}
+
+.lead-status {
+  color: var(--green);
+}
+
+.form-error:empty,
+.lead-status:empty {
+  display: none;
+}
+
 table {
   border-collapse: collapse;
   min-width: 820px;

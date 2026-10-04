@@ -152,6 +152,7 @@
               Add lead
             </button>
           </form>
+          <p class="lead-status" id="leadStatus" role="status"></p>
           <div class="lead-table-wrap">
             <table>
               <thead>
@@ -161,6 +162,7 @@
                   <th>Stage</th>
                   <th>Value</th>
                   <th>Next action</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody id="leadRows"></tbody>
@@ -194,6 +196,32 @@
         </div>
       </section>
     </main>
+
+    <dialog class="lead-dialog" id="leadEditDialog" aria-labelledby="leadEditTitle" aria-describedby="leadEditCompany">
+      <form id="leadEditForm">
+        <h2 id="leadEditTitle">Update lead</h2>
+        <p id="leadEditCompany"></p>
+        <div class="form-grid">
+          <label>
+            Stage
+            <select name="stage" required></select>
+          </label>
+          <label>
+            Value
+            <input name="value" type="number" min="0" step="any" required />
+          </label>
+          <label class="wide">
+            Next action
+            <input name="nextAction" autocomplete="off" />
+          </label>
+        </div>
+        <p class="form-error" id="leadEditError" role="alert"></p>
+        <div class="dialog-actions">
+          <button class="secondary" id="leadEditCancel" type="button">Cancel</button>
+          <button class="primary" id="leadEditSave" type="submit">Save changes</button>
+        </div>
+      </form>
+    </dialog>
 
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
     <script src="/app.js"></script>

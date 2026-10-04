@@ -4,6 +4,9 @@ const state = {
   offers: [],
   leads: [],
   selectedOfferId: null,
+  loadVersion: 0,
+  editingLeadId: null,
+  savingLead: false,
 };
 
 const money = new Intl.NumberFormat("en-US", {
@@ -27,15 +30,26 @@ const api = {
     if (!res.ok) throw new Error(`POST ${path} failed`);
     return res.json();
   },
+  async put(path, body) {
+    const res = await fetch(path, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    if (!res.ok) throw new Error(`PUT ${path} failed`);
+    return res.json();
+  },
 };
 
 async function loadAll() {
+  const version = ++state.loadVersion;
   const [meta, summary, offers, leads] = await Promise.all([
     api.get("/api/meta"),
     api.get("/api/summary"),
     api.get("/api/offers"),
     api.get("/api/leads"),
   ]);
+  if (version !== state.loadVersion) return;
   state.meta = meta;
   state.summary = summary;
   state.offers = offers;
@@ -123,6 +137,7 @@ function renderLeads() {
           <td><span class="chip">${escapeHtml(lead.stage)}</span></td>
           <td>${money.format(lead.value || 0)}</td>
           <td>${escapeHtml(lead.nextAction || "")}</td>
+          <td><button class="secondary edit-lead" type="button" data-id="${escapeHtml(lead.id)}" aria-label="Edit ${escapeHtml(lead.company)}">Edit</button></td>
         </tr>
       `,
     )
@@ -205,6 +220,91 @@ function escapeHtml(value) {
     return entities[char];
   });
 }
+
+const leadDialog = document.querySelector("#leadEditDialog");
+const leadEditForm = document.querySelector("#leadEditForm");
+const leadEditError = document.querySelector("#leadEditError");
+const leadStatus = document.querySelector("#leadStatus");
+
+function setLeadSaving(saving) {
+  state.savingLead = saving;
+  leadEditForm.setAttribute("aria-busy", String(saving));
+  for (const control of leadEditForm.querySelectorAll("input, select, button")) {
+    control.disabled = saving;
+  }
+  document.querySelector("#leadEditSave").textContent = saving ? "Saving\u2026" : "Save changes";
+}
+
+function closeLeadEditor() {
+  const id = state.editingLeadId;
+  leadDialog.close();
+  state.editingLeadId = null;
+  const trigger = [...document.querySelectorAll(".edit-lead")].find((button) => button.dataset.id === id);
+  trigger?.focus();
+}
+
+document.querySelector("#leadRows").addEventListener("click", (event) => {
+  const button = event.target.closest(".edit-lead");
+  if (!button || state.savingLead) return;
+  const lead = state.leads.find((item) => item.id === button.dataset.id);
+  if (!lead) return;
+  state.editingLeadId = lead.id;
+  document.querySelector("#leadEditCompany").textContent = lead.company;
+  const stages = [...new Set([...(state.meta?.stages || []), lead.stage])];
+  leadEditForm.elements.stage.replaceChildren(...stages.map((stage) => new Option(stage, stage)));
+  leadEditForm.elements.stage.value = lead.stage;
+  leadEditForm.elements.value.value = lead.value ?? 0;
+  leadEditForm.elements.nextAction.value = lead.nextAction || "";
+  leadEditError.textContent = "";
+  leadStatus.textContent = "";
+  setLeadSaving(false);
+  leadDialog.showModal();
+});
+
+document.querySelector("#leadEditCancel").addEventListener("click", closeLeadEditor);
+leadDialog.addEventListener("cancel", (event) => {
+  event.preventDefault();
+  if (!state.savingLead) closeLeadEditor();
+});
+
+leadEditForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  if (state.savingLead || !state.editingLeadId) return;
+  const id = state.editingLeadId;
+  const changes = {
+    stage: leadEditForm.elements.stage.value,
+    value: Number(leadEditForm.elements.value.value),
+    nextAction: leadEditForm.elements.nextAction.value,
+  };
+  leadEditError.textContent = "";
+  setLeadSaving(true);
+  let saved;
+  try {
+    saved = await api.put(`/api/leads/${encodeURIComponent(id)}`, changes);
+  } catch {
+    leadEditError.textContent = "Could not save or confirm these changes. Your edits are kept; try again.";
+    setLeadSaving(false);
+    return;
+  }
+
+  // Discard reads started before this write so they cannot restore an older row.
+  const version = ++state.loadVersion;
+  state.leads = state.leads.map((lead) => lead.id === id ? saved : lead);
+  renderLeads();
+  setLeadSaving(false);
+  closeLeadEditor();
+  leadStatus.textContent = "Lead updated.";
+  try {
+    const summary = await api.get("/api/summary");
+    if (version !== state.loadVersion) return;
+    state.summary = summary;
+    renderSummary();
+  } catch {
+    if (version === state.loadVersion) {
+      leadStatus.textContent = "Lead updated. Totals could not refresh; use Refresh to reload them.";
+    }
+  }
+});
 
 document.querySelector("#offerForm").addEventListener("submit", async (event) => {
   event.preventDefault();
